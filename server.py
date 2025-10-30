@@ -20,7 +20,7 @@ def chat():
     return jsonify({"reply": reply, "mood": mood})
 
 # Serve your HTML pages
-@app.route("/", defaults={"path": "minor.html"})
+@app.route("/", defaults={"path": "splash.html"})
 @app.route("/<path:path>")
 def serve(path):
     return send_from_directory(app.static_folder, path)
