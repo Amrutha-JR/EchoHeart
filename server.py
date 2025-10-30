@@ -1,7 +1,6 @@
 # server.py
 import os 
 from flask import Flask, request, jsonify, send_from_directory 
-from flask import Flask, request, jsonify
 from flask_cors import CORS
 from ai import get_emotion, get_ai_response
 
