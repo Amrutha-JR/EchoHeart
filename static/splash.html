@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoHeart - Splash</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Font (same as main site) -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary: #E6E6FA; /* Soft Lavender */
+      --color-secondary: #FFDAB9; /* Warm Peach */
+      --color-accent: #B76E79;   /* Gentle Rose Gold */
+      --color-text: #5A5A5A;
+      --color-background: #FFF8DC; /* Light Cream */
+      --color-white: #FFFFFF;
+      --font-primary: 'Nunito', sans-serif;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: var(--font-primary);
+      background: linear-gradient(135deg, var(--color-primary), #d1d1f7);
+    }
+
+    .splash-content {
+      text-align: center;
+    }
+
+    .splash-logo {
+      font-size: 3em;  /* increased size */
+      font-weight: 700;
+      display: flex;
+      flex-direction: column; /* show heart, then text */
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    /* Heart (same as you had) */
+    .splash-logo #heart {
+      color: #FFDAB9;  /* same peach */
+      font-size: 5rem; /* a bit bigger */
+      animation: pulse 2s infinite, fadeIn 1s ease-in-out forwards;
+    }
+
+    /* EchoHeart text */
+    .splash-logo span {
+      color: var(--color-accent);
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards;
+      animation-delay: 1.2s; /* comes after heart */
+    }
+
+    /* Tagline */
+    .tagline {
+      margin-top: 15px;
+      font-size: 1.6rem;
+      color: #483D8B;
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards;
+      animation-delay: 2.2s; /* comes last */
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash-content">
+    <div class="splash-logo">
+      <div id="heart" class="fas fa-heart-pulse"></div>
+      <span>EchoHeart</span>
+    </div>
+    <p class="tagline">  Your Supportive Friend 💖</p>
+  </div>
+
+  <script>
+    // Redirect after 4s
+    setTimeout(() => {
+      window.location.href = "login.html"; 
+    }, 4000);
+  </script>
+</body>
+</html>
