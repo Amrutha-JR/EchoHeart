@@ -1,9 +1,10 @@
 # server.py
+import os 
 from flask import Flask, request, jsonify, send_from_directory 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from ai import get_emotion, get_ai_response
-import os 
+
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 CORS(app)  # allow calls from your local index.html
