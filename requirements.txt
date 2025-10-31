@@ -4,7 +4,7 @@ gunicorn==23.0.0
 
 # AI + ML models
 transformers==4.45.2
-torch==2.5.1+cpu
+torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
 numpy==1.26.4
 
 # API + Utilities
