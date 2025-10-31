@@ -1,61 +1,51 @@
 import os
-import requests
+from transformers import pipeline
 from openai import OpenAI
 
-# Initialize OpenAI client
+# Load Hugging Face emotion model (lightweight & accurate)
+emotion_model = pipeline(
+    "text-classification",
+    model="j-hartmann/emotion-english-distilroberta-base"
+)
+
+# Initialize OpenAI client (make sure OPENAI_API_KEY is set in Railway)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-# Use Hugging Face Inference API model for emotion detection
-HF_API_URL = "https://api-inference.huggingface.co/models/bhadresh-savani/distilbert-base-uncased-emotion"
-HF_TOKEN = os.environ.get("HF_API_KEY")  # Add this in Railway variables
-
-headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-
 def get_emotion(text):
+    """Detect the user's emotion from text."""
     try:
-        payload = {"inputs": text}
-        response = requests.post(HF_API_URL, headers=headers, json=payload, timeout=10)
-        data = response.json()
-
-        if isinstance(data, list) and len(data) > 0 and isinstance(data[0], list):
-            emotions = data[0]
-            top_emotion = max(emotions, key=lambda x: x["score"])
-            return top_emotion["label"].lower()
-        else:
-            return "neutral"
+        return emotion_model(text)[0]["label"]
     except Exception as e:
         print("Emotion detection error:", e)
         return "neutral"
 
-# GPT-based emotional response
 def get_ai_response(user_text, mood):
-    system_prompt = (
-        f"You are EchoHeart, a kind and friendly AI friend. "
-        f"The user seems {mood}. Respond with empathy, care, and warmth."
+    """Generate EchoHeart's empathetic reply based on mood."""
+    system_msg = (
+        f"You are EchoHeart, a friendly AI companion who provides emotional support. "
+        f"The user feels {mood.lower()}. "
+        f"If the mood is negative (angry, sad, anxious, lonely, stressed), respond empathetically "
+        f"and include one short, practical coping suggestion (e.g., breathing, journaling, music). "
+        f"If the mood is positive (happy, proud, excited), respond warmly and encouragingly without advice."
     )
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_text}
-            ],
-            max_tokens=200,
-            temperature=0.8,
-        )
-        return response.choices[0].message.content.strip()
-    except Exception as e:
-        print("AI response error:", e)
-        return "I'm having a bit of trouble replying right now, but you're doing great 💛"
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": user_text}
+        ],
+        max_tokens=200
+    )
+    return resp.choices[0].message.content
 
 if __name__ == "__main__":
-    print("💚 EchoHeart AI with real emotion detection!")
+    print("💚 EchoHeart is ready to chat!")
     while True:
         user = input("You: ")
         if user.lower() == "exit":
+            print("EchoHeart: Take care, my friend 💚")
             break
         mood = get_emotion(user)
-        print(f"(Detected: {mood})")
         reply = get_ai_response(user, mood)
         print("EchoHeart:", reply)
