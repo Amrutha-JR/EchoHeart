@@ -1,4 +1,4 @@
-# server.py (no change required if already this)
+# server.py
 import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
