@@ -5,9 +5,9 @@ from openai import OpenAI
 
 # Load emotion detector (downloads once the first time)
 emotion_model = pipeline(
-    "text-classification",
-    model="j-hartmann/emotion-english-distilroberta-base"
+    "sentiment-analysis"
 )
+
 
 # Use environment variable for your OpenAI key
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
