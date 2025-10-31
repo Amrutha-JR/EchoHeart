@@ -4,9 +4,7 @@ from transformers import pipeline
 from openai import OpenAI
 
 # Load emotion detector (downloads once the first time)
-emotion_model = pipeline(
-    "sentiment-analysis"
-)
+emotion_model = pipeline("text-classification", model="michellejieli/emotion_text_classifier")
 
 
 # Use environment variable for your OpenAI key
