@@ -1,51 +1,65 @@
+# ai.py
 import os
-from transformers import pipeline
-from openai import OpenAI
+import openai
+from typing import Literal
 
-# Load Hugging Face emotion model (lightweight & accurate)
-emotion_model = pipeline(
-    "text-classification",
-    model="j-hartmann/emotion-english-distilroberta-base"
-)
+# Use the classic openai client (pin to 1.30.1 in requirements)
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-# Initialize OpenAI client (make sure OPENAI_API_KEY is set in Railway)
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# allowed labels you want - change if you want more
+EMOTION_LABELS = ["happy", "sad", "angry", "anxious", "neutral", "excited", "proud", "stressed"]
 
-def get_emotion(text):
-    """Detect the user's emotion from text."""
-    try:
-        return emotion_model(text)[0]["label"]
-    except Exception as e:
-        print("Emotion detection error:", e)
-        return "neutral"
-
-def get_ai_response(user_text, mood):
-    """Generate EchoHeart's empathetic reply based on mood."""
-    system_msg = (
-        f"You are EchoHeart, a friendly AI companion who provides emotional support. "
-        f"The user feels {mood.lower()}. "
-        f"If the mood is negative (angry, sad, anxious, lonely, stressed), respond empathetically "
-        f"and include one short, practical coping suggestion (e.g., breathing, journaling, music). "
-        f"If the mood is positive (happy, proud, excited), respond warmly and encouragingly without advice."
+def classify_emotion(text: str) -> str:
+    """
+    Ask OpenAI to return a single-word label from EMOTION_LABELS that best matches the input.
+    Deterministic (temperature=0) and constrained to output one label only.
+    """
+    prompt = (
+        "Classify the user's emotion using one single word from this list:\n"
+        f"{', '.join(EMOTION_LABELS)}\n\n"
+        "User text:\n"
+        f"{text}\n\n"
+        "Return only the single label (one word) exactly matching the list above, nothing else."
     )
 
-    resp = client.chat.completions.create(
+    resp = openai.ChatCompletion.create(
+        model="gpt-4o-mini",  # you can change to any model you have access to
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=6,
+        temperature=0
+    )
+    label = resp.choices[0].message.content.strip().lower()
+    # fallback: if model returns unexpected, try to sanitize
+    if label not in EMOTION_LABELS:
+        # crude fallback: pick neutral if unknown
+        return "neutral"
+    return label
+
+def get_ai_response(user_text: str, mood: str) -> str:
+    system_msg = (
+        f"You are EchoHeart, a supportive AI companion. "
+        f"Always be empathetic, kind, and encouraging. "
+        f"The user is currently feeling {mood}. "
+        f"If the mood is negative (like angry, sad, anxious, stressed), "
+        f"include one short, practical coping suggestion (one sentence). "
+        f"If the mood is positive (like happy, excited, proud), "
+        f"just respond warmly without suggesting coping actions. Keep responses short (max ~120-150 words)."
+    )
+    resp = openai.ChatCompletion.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": system_msg},
             {"role": "user", "content": user_text}
         ],
-        max_tokens=200
+        max_tokens=250,
+        temperature=0.5
     )
-    return resp.choices[0].message.content
+    return resp.choices[0].message.content.strip()
 
-if __name__ == "__main__":
-    print("💚 EchoHeart is ready to chat!")
-    while True:
-        user = input("You: ")
-        if user.lower() == "exit":
-            print("EchoHeart: Take care, my friend 💚")
-            break
-        mood = get_emotion(user)
-        reply = get_ai_response(user, mood)
-        print("EchoHeart:", reply)
+# Helper used by server
+def get_emotion(text: str) -> str:
+    try:
+        return classify_emotion(text)
+    except Exception:
+        # fail-safe
+        return "neutral"

@@ -1,3 +1,4 @@
+# server.py (no change required if already this)
 import os
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -8,7 +9,6 @@ CORS(app)
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    """API endpoint for chatting with EchoHeart."""
     data = request.get_json() or {}
     user_message = (data.get("message") or "").strip()
     if not user_message:
@@ -21,7 +21,6 @@ def chat():
 @app.route("/", defaults={"path": "splash.html"})
 @app.route("/<path:path>")
 def serve(path):
-    """Serve frontend static files."""
     return send_from_directory(app.static_folder, path)
 
 if __name__ == "__main__":
