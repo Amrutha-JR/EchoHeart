@@ -1,14 +1,12 @@
-# --- Web framework ---
 flask==3.1.2
 flask-cors==6.0.1
 gunicorn==23.0.0
 
-# --- AI & NLP ---
-transformers==4.45.0
-torch==2.9.0+cpu
---extra-index-url https://download.pytorch.org/whl/cpu
-
-# --- Utilities ---
-openai==1.54.3
+# AI + ML models
+transformers==4.45.2
+torch==2.5.1+cpu
 numpy==1.26.4
+
+# API + Utilities
 requests==2.32.3
+openai==1.54.3

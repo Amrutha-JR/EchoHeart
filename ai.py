@@ -3,12 +3,11 @@ import os
 from transformers import pipeline
 from openai import OpenAI
 
-# Load emotion detector (downloads once the first time)
+# Emotion detection model
 emotion_model = pipeline("text-classification", model="michellejieli/emotion_text_classifier")
 
-
-# Use environment variable for your OpenAI key
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# Initialize OpenAI client (simpler and fully compatible)
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 def get_emotion(text):
     return emotion_model(text)[0]["label"]

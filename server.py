@@ -1,12 +1,11 @@
 # server.py
-import os 
-from flask import Flask, request, jsonify, send_from_directory 
+import os
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from ai import get_emotion, get_ai_response
 
-
 app = Flask(__name__, static_folder="static", static_url_path="")
-CORS(app)  # allow calls from your local index.html
+CORS(app)
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -19,11 +18,10 @@ def chat():
     reply = get_ai_response(user_message, mood)
     return jsonify({"reply": reply, "mood": mood})
 
-# Serve your HTML pages
 @app.route("/", defaults={"path": "splash.html"})
 @app.route("/<path:path>")
 def serve(path):
     return send_from_directory(app.static_folder, path)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=True)
