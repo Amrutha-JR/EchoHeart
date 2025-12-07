@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EchoHeart Secret Diary</title>
+<link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+:root {
+  --cover-color: #4b2e2e;
+  --cover-text: #f5deb3;
+  --page-bg: #fdf6e3;
+  --page-border: #a67c52;
+  --color-primary: #E6E6FA;
+  --color-secondary: #FFDAB9;
+  --color-accent: #B76E79;
+  --color-text: #5A5A5A;
+  --font-primary: 'Nunito', sans-serif;
+}
+
+body {
+  font-family: 'Courgette', cursive;
+  background: #f5f0e1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- Header ---------- */
+header {
+    background-color: var(--color-primary);
+    padding: 20px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    width: 100%;
+    z-index: 10;
+}
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.logo {
+    font-family: var(--font-primary);
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-decoration: none;
+}
+.logo i {
+    margin-right: 8px;
+    color: var(--color-secondary);
+}
+nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+nav ul li {
+    margin-left: 20px;
+}
+nav ul li a {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: 600;
+    font-family: var(--font-primary);
+    transition: color 0.3s ease;
+}
+nav ul li a:hover {
+    color: var(--color-accent);
+}
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    nav ul {
+        margin-top: 10px;
+        padding-left: 0;
+    }
+    nav ul li {
+        margin: 0 10px;
+    }
+}
+
+/* ---------- Diary ---------- */
+.diary {
+  margin-top: 40px;
+  width: 900px;
+  height: 500px;
+  perspective: 2000px;
+  position: relative;
+}
+.book {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  position: relative;
+  transition: transform 1s ease-in-out;
+}
+.cover {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: linear-gradient(135deg, #6b4226, #3e2723);
+  color: var(--cover-text);
+  font-size: 2.5em;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+.pages {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  overflow: hidden;
+  background: var(--cover-color);
+  transform: rotateY(-180deg);
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.page {
+  width: 50%;
+  height: 100%;
+  background: var(--page-bg);
+  border: 2px solid var(--page-border);
+  box-sizing: border-box;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+.page h2[contenteditable] {
+  margin: 0 0 10px;
+  font-size: 1.4em;
+  color: var(--cover-color);
+  font-weight: bold;
+  outline: none;
+}
+.page div[contenteditable] {
+  font-size: 1.1em;
+  line-height: 1.5em;
+  color: #3e2723;
+  outline: none;
+  height: 85%;
+  overflow-y: auto;
+}
+
+/* Upload button */
+#imageUpload { display: none; }
+.upload-label {
+  position: absolute;
+  cursor: pointer;
+  text-align: center;
+  color: #6b4226;
+  opacity: 0.9;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+.upload-label * { pointer-events: none; }
+.upload-label img { width: 80px; opacity: 0.7; transition: 0.3s; }
+.upload-label.upload-center {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.upload-label.upload-bottom {
+  bottom: 10px; right: 10px;
+}
+.upload-label.upload-bottom img { width: 50px; }
+
+/* Photos */
+#photoGallery { position: relative; width: 100%; height: 100%; }
+.photo-wrapper {
+  position: absolute;
+  user-select: none;
+  cursor: grab;
+}
+.photo-wrapper:active { cursor: grabbing; }
+.photo-wrapper img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.resize-handle, .delete-btn {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #5a3c2c;
+  backdrop-filter: blur(2px);
+  user-select: none;
+  display: none;
+}
+.photo-wrapper.active .resize-handle,
+.photo-wrapper.active .delete-btn { display: flex; }
+.resize-handle { right: -10px; bottom: -10px; }
+.delete-btn { right: -10px; top: -10px; }
+
+/* Controls */
+.controls {
+  margin-top: 20px;
+  display: none;
+  gap: 15px;
+  position: relative;
+}
+.controls button {
+  padding: 8px 16px;
+  font-family: 'Courgette', cursive;
+  font-size: 1.1em;
+  background: var(--cover-color);
+  color: var(--cover-text);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.controls button:hover { background: #6b4226; }
+
+#saveToast {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6b4226;
+  color: var(--cover-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: none;
+  z-index: 1000;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="container">
+        <a href="#" class="logo" aria-label="EchoHeart Home"><i class="fas fa-heart-pulse"></i>EchoHeart</a>
+        <nav aria-label="Main navigation">
+            <ul><li><a href="minor.html">Go Back Home</a></li></ul>
+        </nav>
+    </div>
+</header>
+
+<div class="diary">
+  <div class="book" id="book">
+    <div class="cover" id="cover">EchoHeart Diary ✨</div>
+    <div class="pages">
+      <div class="page" id="leftPage">
+        <label class="upload-label upload-center" id="uploadLabel">
+          <img src="https://cdn-icons-png.flaticon.com/512/1665/1665731.png" alt="Add">
+          <p>Add Photos</p>
+        </label>
+        <input type="file" id="imageUpload" accept="image/*" multiple/>
+        <div id="photoGallery"></div>
+      </div>
+      <div class="page" id="rightPage">
+        <h2 id="entryTitle" contenteditable="true"></h2>
+        <div id="diaryContent" contenteditable="true"></div>
+        <div id="saveToast">Saved!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="controls" id="controls">
+  <button onclick="prevPage()">← Back</button>
+  <button onclick="saveEntry()">💾 Save</button>
+  <button onclick="nextPage()">Next →</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+/* --------------------- USER + SECURITY SETUP --------------------- */
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser) {
+  alert("Please log in to EchoHeart first.");
+  window.location.href = "login.html";
+}
+
+// sessionKey must be set by diary-login when the user unlocked the diary.
+// diary-login should set: sessionStorage.setItem('diarySessionKey', <some derived secret>);
+const sessionKey = sessionStorage.getItem("diarySessionKey");
+if (!sessionKey) {
+  alert("Session expired! Please unlock your diary again.");
+  window.location.href = "diary-login.html";
+}
+
+// per-user storage key
+const diaryKey = `diary_${currentUser}`;
+
+// load & decrypt per-user diary entries
+let entries = [];
+const encryptedData = localStorage.getItem(diaryKey);
+if (encryptedData) {
+  try {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, sessionKey);
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    entries = JSON.parse(decrypted) || [];
+  } catch (e) {
+    // if decryption fails, don't reveal anything — start with empty (or default) entries
+    entries = [];
+  }
+}
+if (!entries || entries.length === 0) entries = [{ title:'Entry', content:'', photos:[] }];
+
+/* --------------------- ORIGINAL FUNCTIONALITY --------------------- */
+const book = document.getElementById("book");
+const cover = document.getElementById("cover");
+const controls = document.getElementById("controls");
+const photoGallery = document.getElementById("photoGallery");
+const imageUpload = document.getElementById("imageUpload");
+const uploadLabel = document.getElementById("uploadLabel");
+const diaryContent = document.getElementById("diaryContent");
+const entryTitle = document.getElementById("entryTitle");
+const saveToast = document.getElementById("saveToast");
+
+let currentEntry = 0;
+
+entries.forEach(entry => {
+  if (entry.title && entry.title.match(/^Entry\s*\d*$/)) {
+    entry.title = "Entry";
+  }
+});
+
+cover.addEventListener("click", () => {
+  book.style.transform = "rotateY(180deg)";
+  controls.style.display = "flex";
+  loadEntry(currentEntry);
+});
+
+uploadLabel.addEventListener("click", () => imageUpload.click());
+
+function updateUploadLabel(){
+  if(photoGallery.children.length===0){
+    uploadLabel.className="upload-label upload-center";
+    uploadLabel.querySelector("p").style.display="block";
+  } else {
+    uploadLabel.className="upload-label upload-bottom";
+    uploadLabel.querySelector("p").style.display="none";
+  }
+}
+
+function makePhotoInteractive(wrapper){
+  let isDragging=false, isResizing=false;
+  let startX,startY,startLeft,startTop,startWidth,startHeight;
+  const resizeHandle=wrapper.querySelector(".resize-handle");
+  const deleteBtn=wrapper.querySelector(".delete-btn");
+
+  wrapper.addEventListener("mousedown",e=>{
+    if(e.target===resizeHandle||e.target===deleteBtn)return;
+    document.querySelectorAll(".photo-wrapper").forEach(p=>p.classList.remove("active"));
+    wrapper.classList.add("active");
+    isDragging=true;
+    startX=e.clientX; startY=e.clientY;
+    const rect=wrapper.getBoundingClientRect();
+    const parentRect=wrapper.parentElement.getBoundingClientRect();
+    startLeft=rect.left-parentRect.left;
+    startTop=rect.top-parentRect.top;
+    e.preventDefault();
+  });
+
+  function onMouseMove(e){
+    if(isDragging){
+      const parentRect=wrapper.parentElement.getBoundingClientRect();
+      let newLeft=startLeft+(e.clientX-startX);
+      let newTop=startTop+(e.clientY-startY);
+      const rect=wrapper.getBoundingClientRect();
+      if(newLeft<0)newLeft=0;
+      if(newTop<0)newTop=0;
+      if(newLeft+rect.width>parentRect.width)newLeft=parentRect.width-rect.width;
+      if(newTop+rect.height>parentRect.height)newTop=parentRect.height-rect.height;
+      wrapper.style.left=newLeft+'px';
+      wrapper.style.top=newTop+'px';
+    }
+    else if(isResizing){
+      let newWidth=startWidth+(e.clientX-startX);
+      let newHeight=startHeight+(e.clientY-startY);
+      if(newWidth<50)newWidth=50;
+      if(newHeight<50)newHeight=50;
+      wrapper.style.width=newWidth+'px';
+      wrapper.style.height=newHeight+'px';
+    }
+  }
+
+  function onMouseUp(){ isDragging=false; isResizing=false; }
+  document.addEventListener("mousemove",onMouseMove);
+  document.addEventListener("mouseup",onMouseUp);
+
+  resizeHandle.addEventListener("mousedown",e=>{
+    isResizing=true;
+    startX=e.clientX; startY=e.clientY;
+    startWidth=wrapper.offsetWidth;
+    startHeight=wrapper.offsetHeight;
+    e.stopPropagation();
+  });
+
+  deleteBtn.addEventListener("click",e=>{
+    wrapper.remove();
+    updateUploadLabel();
+    e.stopPropagation();
+  });
+}
+
+function setupPlaceholders(){
+  const titlePlaceholder='Entry';
+  const contentPlaceholder='Write your secret...';
+
+  if(!entryTitle.textContent) entryTitle.textContent=titlePlaceholder;
+  if(!diaryContent.textContent) diaryContent.textContent=contentPlaceholder;
+
+  entryTitle.addEventListener('focus',()=>{ if(entryTitle.textContent===titlePlaceholder) entryTitle.textContent=''; });
+  entryTitle.addEventListener('blur',()=>{ if(entryTitle.textContent.trim()==='') entryTitle.textContent=titlePlaceholder; });
+
+  diaryContent.addEventListener('focus',()=>{ if(diaryContent.textContent===contentPlaceholder) diaryContent.textContent=''; });
+  diaryContent.addEventListener('blur',()=>{ if(diaryContent.textContent.trim()==='') diaryContent.textContent=contentPlaceholder; });
+}
+
+function loadEntry(index){
+  const entry=entries[index];
+  entryTitle.textContent=entry.title||'Entry';
+  diaryContent.textContent=entry.content||'';
+  photoGallery.innerHTML='';
+  entry.photos.forEach(photo=>{
+    const wrapper=document.createElement("div");
+    wrapper.className="photo-wrapper";
+    wrapper.style.width=photo.width+'px';
+    wrapper.style.height=photo.height+'px';
+    wrapper.style.left=photo.left+'px';
+    wrapper.style.top=photo.top+'px';
+    wrapper.innerHTML=`
+      <img src="${photo.src}">
+      <div class="resize-handle">↔</div>
+      <div class="delete-btn">×</div>
+    `;
+    photoGallery.appendChild(wrapper);
+    makePhotoInteractive(wrapper);
+  });
+  updateUploadLabel();
+  saveToast.style.display='none';
+  setupPlaceholders();
+}
+
+imageUpload.addEventListener("change",e=>{
+  Array.from(e.target.files).forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=(ev)=>{
+      const wrapper=document.createElement("div");
+      wrapper.className="photo-wrapper";
+      wrapper.style.width="150px";
+      wrapper.style.height="150px";
+      wrapper.style.left="10px";
+      wrapper.style.top="10px";
+      wrapper.innerHTML=`
+        <img src="${ev.target.result}">
+        <div class="resize-handle">↔</div>
+        <div class="delete-btn">×</div>
+      `;
+      photoGallery.appendChild(wrapper);
+      makePhotoInteractive(wrapper);
+      updateUploadLabel();
+    }
+    reader.readAsDataURL(file);
+  });
+
+  // ✅ allow adding the same image file again
+  imageUpload.value = "";
+});
+
+function saveEntry(){
+  const photos=[];
+  document.querySelectorAll(".photo-wrapper").forEach(p=>{
+    photos.push({
+      src:p.querySelector("img").src,
+      width:p.offsetWidth,
+      height:p.offsetHeight,
+      left:p.offsetLeft,
+      top:p.offsetTop
+    });
+  });
+
+  const titleText=entryTitle.textContent.trim()==='Entry'?'Entry':entryTitle.textContent;
+  const contentText=diaryContent.textContent.trim()==='Write your secret...'?'':diaryContent.textContent;
+
+  entries[currentEntry]={title:titleText,content:contentText,photos};
+
+  // 🔒 Encrypt and save per-user using sessionKey
+  try {
+    const encrypted = CryptoJS.AES.encrypt(JSON.stringify(entries), sessionKey).toString();
+    localStorage.setItem(diaryKey, encrypted);
+  } catch (e) {
+    console.error('Encryption/save failed', e);
+  }
+
+  saveToast.style.display="block";
+  setTimeout(()=>saveToast.style.display="none",1000);
+}
+
+function nextPage(){
+  saveToast.style.display="none";
+  saveEntry();
+  if(currentEntry<entries.length-1){
+    currentEntry++;
+    loadEntry(currentEntry);
+  }else{
+    entries.push({title:'Entry',content:'',photos:[]});
+    currentEntry=entries.length-1;
+    loadEntry(currentEntry);
+  }
+}
+
+function prevPage(){
+  saveToast.style.display="none";
+  saveEntry();
+  if(currentEntry>0){
+    currentEntry--;
+    loadEntry(currentEntry);
+  }
+}
+</script>
+
+</body>
+</html>

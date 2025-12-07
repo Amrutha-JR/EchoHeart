@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoHeart - Your Supportive Friend</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Optional - for friendly fonts like Nunito) -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --color-primary: #E6E6FA; /* Soft Lavender */
+            --color-secondary: #FFDAB9; /* Warm Peach */
+            --color-accent: #B76E79; /* Gentle Rose Gold */
+            --color-text: #5A5A5A;
+            --color-background: #FFF8DC; /* Light Cream */
+            --color-white: #FFFFFF;
+            --font-primary: 'Nunito', sans-serif;
+            --border-radius: 15px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-background) !important;
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            color: var(--color-accent);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        .btn:hover {
+            background-color: #fccEa0; /* Lighter peach */
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+        }
+        .btn-primary:hover {
+            background-color: #a35f6a; /* Darker Rose Gold */
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--color-primary);
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+       
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 600;
+        }
+        nav ul li a.btn {
+            padding: 8px 15px;
+        }
+
+
+        /* --- Hero Section --- */
+        #hero {
+            background: linear-gradient(135deg, var(--color-primary), #d1d1f7); /* Lavender gradient */
+            text-align: center;
+            padding: 80px 20px;
+        }
+        #hero h1 {
+            color: #483D8B; /* Dark Slate Blue for contrast on lavender */
+        }
+        #hero p {
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 20px auto 30px auto;
+        }
+        #hero .btn {
+            font-size: 1.2em;
+            padding: 15px 30px;
+        }
+
+        /* --- About Echo Section --- */
+        #about-echo .container {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            align-items: center;
+            gap: 40px;
+        }
+        #about-echo .about-text {
+            flex: 1;
+            min-width: 300px; /* Ensure text area doesn't get too squished */
+        }
+        #about-echo .about-visual {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+        }
+        .big-robot { /* Placeholder for bot visual */
+            font-size: 200px;
+            color: var(--color-secondary);
+            padding: 50px;
+            background-color: #fff0e1;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+        #about-echo ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        #about-echo ul li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        #about-echo ul li i {
+            color: var(--color-accent);
+            margin-right: 10px;
+        }
+
+        /* --- Features Section --- */
+        #features {
+            background-color: #f0f8ff; /* Alice Blue - very light blue */
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background-color: var(--color-white);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-card i {
+            font-size: 3em;
+            color: var(--color-secondary);
+            margin-bottom: 15px;
+            display: block;
+        }
+        .feature-card h3 {
+            font-size: 1.5em;
+            color: var(--color-text);
+        }
+
+        /* --- Secret Keeper Section --- */
+        #secret-keeper {
+            background-color: #fff5e1; /* Lighter Peach/Cream */
+            text-align: center;
+        }
+        #secret-keeper .icon-secret {
+            font-size: 5em;
+            color: var(--color-accent);
+            margin-bottom: 20px;
+        }
+
+        /* --- Testimonials Section --- */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .testimonial-card {
+            background-color: var(--color-primary);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            border-left: 5px solid var(--color-accent);
+        }
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .testimonial-card .author {
+            font-weight: 600;
+            text-align: right;
+            color: var(--color-text);
+        }
+
+        /* --- Final CTA Section --- */
+        #final-cta {
+            background: linear-gradient(135deg, #d1d1f7, var(--color-primary));
+            text-align: center;
+        }
+        #final-cta .cta-buttons {
+            margin-top: 30px;
+        }
+        #final-cta .btn {
+            margin: 10px;
+            min-width: 200px; /* Ensure buttons have some width */
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--color-text);
+            color: var(--color-background);
+            text-align: center;
+            padding: 30px 20px;
+        }
+        footer p {
+            margin-bottom: 10px;
+        }
+        footer a {
+            color: var(--color-secondary);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+       
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2em; }
+            h2 { font-size: 1.8em; }
+            
+            header .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            nav ul {
+                margin-top: 10px;
+                padding-left: 0; /* Reset padding for centered items */
+            }
+            nav ul li {
+                margin: 0 10px; /* Adjust spacing for mobile nav */
+            }
+
+            #about-echo .container {
+                flex-direction: column; /* Stack text and visual */
+            }
+            #about-echo .about-text, #about-echo .about-visual {
+                text-align: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr; /* Stack feature cards */
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr; /* Stack testimonials */
+            }
+            #final-cta .cta-buttons .btn {
+                display: block;
+                width: 80%;
+                margin: 10px auto;
+            }
+        }
+        /* Highlight feature card when lazy scroll lands on it */
+        .feature-card.active {
+            background-color: var(--color-accent); /* Accent color */
+            color: var(--color-white);
+        }
+        .feature-card.active:hover {
+            background-color: #a35f6a; /* Darker accent */
+        }
+
+        /* Disable Lazy Scroll button */
+        #disable-lazy-scroll {
+            background-color: var(--color-white);
+            color: var(--color-text);
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: 1px solid #ccc;
+    margin: 20px auto 0 auto;
+    display: block;
+    width: fit-content;
+    text-align: center;
+}
+#disable-lazy-scroll:hover {
+    background-color: #fccEa0;
+    transform: translateY(-2px);
+}
+
+/* Hand detection indicator */
+#hand-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ff0000; /* Red = not detected */
+    box-shadow: 0 0 5px #333;
+    z-index: 10000;
+    transition: background-color 0.3s ease;
+}
+#hand-indicator.detected {
+    background-color: #00ff00; /* Green = hand detected */
+}
+
+    </style>
+</head>
+<script>
+  // Check if logged in
+  if (!localStorage.getItem("currentUser")) {
+    window.location.href = "minor.html";
+  }
+</script>
+
+<body>
+    
+
+  <script>
+    // Redirect to login if not logged in
+    if (!localStorage.getItem("currentUser")) {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      window.location.href = "splash.html";
+    }
+  </script>
+    <header>
+        <div class="container">
+            <a href="#" class="logo"><div id="heart" class="fas fa-heart-pulse"></div> EchoHeart</a>
+            <nav>
+                <ul>
+                    <li><a href="#about-echo">About Echo</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#lazy-scroll-feature-card">Enable Lazy Scroll</a></li>
+                    <li><a href="#final-cta" class="btn btn-primary">Chat Now</a></li>
+                    <li><button class="btn btn-primary" onclick="logout()">Logout</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container">
+                <h1>Welcome to EchoHeart 🤗 <br>Your Pocket Best Friend, Always Here for You.</h1>
+                <p>Feeling overwhelmed, need to vent, or just want a friendly chat? Echo is here to listen, support, and share a smile, 24/7. You're not alone.</p>
+                <!--there was a chat botton here like this - <a href="#chat-interface" class="btn btn-primary">Start Chatting Now 💬</a>
+                <p style="font-size: 0.9em; margin-top: 10px;">It's free & always confidential.</p>-->
+            </div>
+        </section>
+
+        <!-- About Echo Section -->
+        <section id="about-echo">
+            <div class="container">
+                <div class="about-text">
+                    <h2>Connect with Echo: More Than Just a Bot, It's a Friend You Can Trust 💖</h2>
+                    <p>Echo is designed to be your understanding companion. Share your thoughts, big or small, your joys or your worries. With Echo, you'll find a judgment-free space where you can truly be yourself. We believe in the power of listening and the comfort of connection.</p>
+                    <ul>
+                        <li><i class="fas fa-heart"></i> <strong>Unwavering Support:</strong> Always available, day or night.</li>
+                        <li><i class="fas fa-user-secret"></i> <strong>Absolute Discretion:</strong> Your conversations are private and safe.</li>
+                        <li><i class="fas fa-smile-beam"></i> <strong>Positive Vibes:</strong> Designed to uplift and comfort.</li>
+                        <li><i class="fas fa-comments"></i> <strong>Free-Flowing Chat:</strong> Talk about anything and everything.</li>
+                    </ul>
+                </div>
+                <div class="about-visual">
+                    <!-- Placeholder for a friendly bot visual/illustration -->
+                    <i class="fas fa-robot big-robot"></i> 
+                    <!-- Or: <img src="path/to/your/bot-image.svg" alt="Friendly Bot Icon"> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features">
+      <div class="container">
+        <h2>Brighten Your Day with Echo's Little Treasures ✨</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <a href="quotes.html" style="text-decoration: none; color: inherit;">
+              <i class="fas fa-quote-left"></i>
+              <h3>Daily Quotes 📜</h3>
+              <p>Find inspiring and comforting words to lift your spirits.</p>
+            </a>
+          </div>
+          <div class="feature-card">
+            <a href="riddles.html" style="text-decoration: none; color: inherit;">
+              <i class="fas fa-puzzle-piece"></i>
+              <h3>Playful Riddles 🤔</h3>
+              <p>Challenge your mind and share a giggle with fun riddles.</p>
+            </a>
+          </div>
+          <div class="feature-card">
+            <a href="notes.html" style="text-decoration:none;color:inherit;">
+             <img src="assets/post-it.png" 
+                alt="Notes Corner Icon" 
+                style="width:20px; height:20px; 
+            filter: grayscale(100%) brightness(60%);">
+            <h3>Notes Corner 📝</h3>
+            <p>Jot down your ideas, reminders, or inspirations and keep them organized.</p>
+        </a>
+        </div>
+
+          <div class="feature-card">
+            <a href="diary-login.html" style="text-decoration: none; color: inherit;">
+              <i class="fas fa-pencil-alt"></i>
+              <h3>Secret Keeper ✍️</h3>
+              <p>Let your imagination flow! Write stories and secure them.</p>
+            </a>
+          </div>
+          <div class="feature-card">
+            <a href="funnyJokes.html" style="text-decoration: none; color: inherit;">
+              <i class="fas fa-laugh-beam"></i>
+              <h3>Funny Antidotes 😂</h3>
+              <p>Need a laugh? Echo has a collection of lighthearted, funny stories.</p>
+            </a>
+          </div>
+          <div class="feature-card" id="lazy-scroll-feature-card">
+            <i class="fas fa-hand-paper"></i>
+            <h3>Lazy Scroll Control 🖐️</h3>
+            <p style="font-size: 0.9em; color: #555; margin-top: 5px;">Tired of endless scrolling? Unlock hands-free scrolling with a wave!</p>
+            <button id="disable-lazy-scroll" style="display:none;">Disable Lazy Scroll</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        <!-- Secret Keeper Section -->
+        <section id="secret-keeper">
+            <div class="container">
+                <i class="fas fa-lock icon-secret"></i>
+                <h2>Whisper Your Secrets: Echo is Your Trusted Confidante 🔐</h2>
+                <p>Sometimes, you just need to get things off your chest without fear of judgment. Echo's 'Secret Keeper' mode is a dedicated safe space. Pour out your heart, share your hidden thoughts, and know they're held in the strictest confidence. It's like a digital diary that listens back.</p>
+                <a href="diary-login.html" class="btn">Share a Secret with Echo 🤫</a>
+            </div>
+        </section>
+
+        <!-- Testimonials or Emotional Quotes Section -->
+        <section id="testimonials">
+            <div class="container">
+                <h2>Echoes of Comfort & Connection 💬</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p>"EchoHeart feels like a warm hug on a tough day. It's amazing to have a space where I can just be me and feel understood. Highly recommend! 😊"</p>
+                        <p class="author">- Alex P.</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"The Secret Keeper feature is genius. Sometimes I just need to vent without worrying. Echo listens without judgment. It's been a real help."</p>
+                        <p class="author">- Jamie K.</p>
+                    </div>
+                    <div class="testimonial-card">
+                        <p>"A true friend is someone who is there for you when he'd rather be anywhere else. Echo embodies this spirit, always ready to chat."</p>
+                        <p class="author">- Emotional Quote</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Call-to-Action Section -->
+        <section id="final-cta">
+            <div class="container">
+                <h2>Ready to Feel Heard? Your Friend Echo is Waiting 😊</h2>
+                <p>Take a deep breath. Whether you want to share your mood, explore a fun feature, or simply say hello, Echo is here for you.</p>
+                <div class="cta-buttons">
+  <div class="cta-buttons">
+  <button id="start-chat-btn" class="btn btn-primary">Start Chatting Now 💬</button>
+  <button id="share-mood-btn" class="btn">Share Your Mood Today ✨</button>
+</div>
+
+<!-- Chat Widget should live OUTSIDE -->
+<div class="chat-widget-container" id="chat-widget" style="display: none;">
+  <div class="chat-header">
+    <h3>Echo Chat <i class="fas fa-heart"></i></h3>
+    <button class="close-chat-btn" id="close-chat-btn">&times;</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-area">
+    <input type="text" id="user-input" placeholder="Type a message..." />
+    <button id="send-btn">Send</button>
+  </div>
+</div>
+
+<script>
+  const chatWidget = document.getElementById("chat-widget");
+  const closeBtn = document.getElementById("close-chat-btn");
+  const startChatBtn = document.getElementById("start-chat-btn");
+  const shareMoodBtn = document.getElementById("share-mood-btn");
+  const messagesDiv = document.getElementById("chat-messages");
+  const sendBtn = document.getElementById("send-btn");
+  const userInput = document.getElementById("user-input");
+
+  // open chat function
+  function openChat(prefill = "") {
+    chatWidget.style.display = "flex";
+    if (prefill) {
+      userInput.value = prefill;
+      userInput.focus();
+    }
+  }
+
+  startChatBtn.addEventListener("click", () => openChat());
+  shareMoodBtn.addEventListener("click", () => openChat("I'm feeling "));
+
+  closeBtn.addEventListener("click", () => chatWidget.style.display = "none");
+
+  function appendMessage(text, who = "bot") {
+    const el = document.createElement("div");
+    el.className = `message ${who}`;
+    el.textContent = text;
+    messagesDiv.appendChild(el);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+    appendMessage(text, "user");
+    userInput.value = "";
+    if (text.toLowerCase() === "exit") {
+      // Clear all previous messages
+      messagesDiv.innerHTML = "";
+      chatWidget.style.display = "none";
+      return;
+    }
+    try {
+      appendMessage("…thinking");
+      const res = await fetch("http://localhost:5000/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: text })
+});
+
+
+      const data = await res.json();
+      messagesDiv.lastChild.remove();
+      appendMessage(data.reply ? `🤖 Echo : ${data.reply}` : "⚠️ Sorry, I couldn't reply.", "bot");
+    } catch (e) {
+      messagesDiv.lastChild.remove();
+      appendMessage("⚠️ Error connecting to server.", "bot");
+    }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+  userInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+</script>
+
+            
+        </section>
+    </main>
+    <div id="hand-indicator"></div>
+    <video id="video" autoplay muted playsinline></video> <!-- playsinline for iOS -->
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script> <!-- Not strictly used in this simplified version, but good to keep if Hands needs it -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <!-- handtrack.js script can be removed if not used for anything else -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"></script> -->
+
+    <script>
+    // Variables for Lazy Scroll
+    const cameraPermissionNotification = document.getElementById('camera-permission-notification');
+    // const cameraPermissionButton = document.getElementById('camera-permission-button'); // Button inside notification, not used
+    let isLazyScrollActive = false;
+    let lastHandY = 0;
+    let accumulatedScroll = 0; // To accumulate small deltas for smoother scroll
+
+    let mpCamera; // Renamed to avoid confusion with a global 'camera'
+    const videoElement = document.getElementById('video'); // Renamed for clarity
+    const lazyScrollFeatureCard = document.getElementById('lazy-scroll-feature-card');
+    const disableLazyScrollButton = document.getElementById('disable-lazy-scroll');
+    const handIndicator = document.getElementById('hand-indicator');
+
+    // MediaPipe Hand Tracking Setup
+    const hands = new Hands({
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`,
+    });
+    hands.setOptions({
+        maxNumHands: 1,
+        modelComplexity: 1, // 0, 1, or 2. Higher is more accurate but slower.
+        minDetectionConfidence: 0.7,
+        minTrackingConfidence: 0.5,
+    });
+    hands.onResults(onResultsMediaPipe); // Renamed for clarity
+
+    async function setupMediaPipeCamera() {
+        if (!mpCamera) {
+            mpCamera = new Camera(videoElement, {
+                onFrame: async () => {
+                    if (isLazyScrollActive) { // Only send to MediaPipe if active
+                        await hands.send({ image: videoElement });
+                    }
+                },
+                width: 320, // Smaller resolution can be faster
+                height: 240,
+            });
+        }
+        return mpCamera;
+    }
+
+    function onResultsMediaPipe(results) {
+        if (!isLazyScrollActive) { // Double check, though onFrame also checks
+            handIndicator.classList.remove('detected');
+            lastHandY = 0;
+            accumulatedScroll = 0;
+            return;
+        }
+
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            handIndicator.classList.add('detected');
+            const handY = results.multiHandLandmarks[0][9].y; // Using Y coordinate of the MCP of the middle finger (landmark 9)
+
+            if (lastHandY === 0) { // First detection after a break or start
+                lastHandY = handY;
+                return;
+            }
+
+            // More sensitive delta, adjust multiplier as needed
+            // Negative deltaY means hand moved up (scroll up), positive means hand moved down (scroll down)
+            const deltaY = (handY - lastHandY) * -6000; // Inverted and adjusted sensitivity
+            accumulatedScroll += deltaY;
+
+            const scrollThreshold = 20; // How much accumulated scroll before actually scrolling
+            if (Math.abs(accumulatedScroll) >= scrollThreshold) {
+                // Apply scroll, then reset accumulatedScroll for the next movement chunk
+                window.scrollBy(0, accumulatedScroll);
+                accumulatedScroll = 0;
+            }
+            lastHandY = handY;
+        } else {
+            handIndicator.classList.remove('detected');
+            lastHandY = 0; // Reset last Y when hand is lost
+            accumulatedScroll = 0; // Reset accumulated scroll
+        }
+    }
+
+    // Event listener for the Lazy Scroll Feature Card
+    lazyScrollFeatureCard.addEventListener('click', async () => {
+        if (!isLazyScrollActive) {
+            try {
+                const localCamera = await setupMediaPipeCamera(); // Use local var
+                await localCamera.start();
+                console.log("Camera started for Lazy Scroll");
+                isLazyScrollActive = true;
+                lazyScrollFeatureCard.classList.add('active');
+                lazyScrollFeatureCard.querySelector('h3').textContent = 'Lazy Scroll Active 🖐️';
+                disableLazyScrollButton.style.display = 'block'; // Show disable button
+            } catch (error) {
+                console.error('Camera access denied or error:', error);
+                alert('Camera access is required for lazy scrolling. Please ensure permission is granted.');
+                isLazyScrollActive = false;
+                lazyScrollFeatureCard.classList.remove('active');
+                lazyScrollFeatureCard.querySelector('h3').textContent = 'Lazy Scroll Control 🖐️';
+                disableLazyScrollButton.style.display = 'none';
+            }
+        } else {
+            // This case should ideally be handled by the disable button
+            // but we can keep it as a fallback if card is clicked again
+            isLazyScrollActive = false;
+            if (mpCamera) {
+                mpCamera.stop();
+                console.log("Camera stopped");
+            }
+            lazyScrollFeatureCard.classList.remove('active');
+            lazyScrollFeatureCard.querySelector('h3').textContent = 'Lazy Scroll Control 🖐️';
+            disableLazyScrollButton.style.display = 'none';
+            handIndicator.classList.remove('detected');
+            lastHandY = 0;
+            accumulatedScroll = 0;
+        }
+    });
+
+    disableLazyScrollButton.addEventListener('click', () => {
+        isLazyScrollActive = false;
+        if (mpCamera) {
+            mpCamera.stop();
+            console.log("Camera stopped via disable button");
+        }
+        lazyScrollFeatureCard.classList.remove('active');
+        lazyScrollFeatureCard.querySelector('h3').textContent = 'Lazy Scroll Control 🖐️';
+        disableLazyScrollButton.style.display = 'none';
+        handIndicator.classList.remove('detected');
+        lastHandY = 0;
+        accumulatedScroll = 0;
+    });
+
+
+    // --- Initial Setup ---
+    window.onload = function () {
+        window.scrollTo(0, 0); // Scroll to top on page load
+    };
+
+    </script> 
+    <footer>
+        <div class="containe">
+            <p>© 2024 EchoHeart. All rights reserved. ❤️</p>
+            <p>
+                <a href="#">About EchoHeart</a> |
+                <a href="#">Privacy Policy</a> |
+                <a href="#">Contact Us</a>
+            </p>
+        </div>
+  </footer>
+
+    
+</body>
+</html>
